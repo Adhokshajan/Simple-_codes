@@ -1,16 +1,16 @@
+#Coded BY Tarun And Adhok
 import pickle as p
 import random as r
 f=open("Books.dat","rb+")
 f1=open("register.dat","rb+")
 f2=open("cart.dat","wb+")
 f3=open("feedback.txt","w+")
-
 def search():
     print("Search Menu")
-    z=int(input("Press 1 to Search by Book Name \nPress 2 to Search by Author Name "))
-    if z==1:
+    a=int(input("Press 1 to Search by Book Name \n Press 2 to Search By Author Name"))
+    if a==1:
 
-        pt=input("Enter book name ")
+        pt=input("Enter book name")
         c=0
         try:
             f.seek(0)
@@ -19,15 +19,16 @@ def search():
                 if d["Name"]==pt:
                     print(d)
                     c+=1
-                    m=input("Would you like to order the book(Y/N) ")
+                    m=input("Would you like to order the book(Y/N)")
                     if m=="Y":
                         order()
 
 
         except:
             print(c,"Matches Found")
-    elif z==2:
-        pt=input("Enter Author Name ")
+
+    elif a==2:
+        pt=input("Enter Author name")
         c=0
         try:
             f.seek(0)
@@ -36,7 +37,7 @@ def search():
                 if d["Author Name"]==pt:
                     print(d)
                     c+=1
-                    m=input("Would you like to order this book(Y/N) ")
+                    m=input("Would you like to order the book(Y/N)")
                     if m=="Y":
                         order()
 
@@ -44,23 +45,23 @@ def search():
         except:
             print(c,"Matches Found")
 def order():
-        
+        f2=open("cart.dat","rb+")
         x=True
         while x:
-            r=input("Enter the book name you would like to order  ")
+            r=input("Enter the book name you would like to order")
             try:
                 f.seek(0)
                 while True:
                     d=p.load(f)
                    
                     if d['Name']==r:
-                        print(d)
                         p.dump(d,f2)
 
             except:
             
-                t=input("Would You like to order any other book(Yes/No)  ")
+                t=input("Would You like to order any other book(Yes/No)")
                 if t=="No": 
+                   f2.close()
                    cart()
                    break
 def update():
@@ -106,13 +107,16 @@ def payment():
                 ''')
                 z=int(input("Enter your Option"))
                 if z ==1:
-                    print("NOTE:You need to have a registerd UPI ID or else it will be created")
                     v=input("Enter your UPI ID")
-                   
+                    print("NOTE:You need to have a registerd UPI ID or else it will be created")
                     b=bool(v)
                     if b==1:
                         print("Payment Succesfull")
+                        print()
+                        print()
                         print("Redirecting to home page")
+                        print()
+                        print()
                         home()
                         break
                 elif z==2:
@@ -127,7 +131,11 @@ def payment():
                         l=bool(k)
                         if l==1:
                             print("Payment Succesfull")
+                            print()
+                            print()
                             print("Redirecting to home page")
+                            print()
+                            print()
                             home()
                             break
                     elif v=="HDFC":
@@ -135,7 +143,11 @@ def payment():
                         l=bool(k)
                         if l==1:
                             print("Payment Succesfull")
+                            print()
+                            print()
                             print("Redirecting to home page")
+                            print()
+                            print()
                             home()
                             break
 
@@ -144,7 +156,11 @@ def payment():
                         l=bool(k)
                         if l==1:
                             print("Payment Succesfull")
+                            print()
+                            print()
                             print("Redirecting to home page")
+                            print()
+                            print()
                             home()
                             break
                     elif v=="ICICI":
@@ -152,22 +168,28 @@ def payment():
                         l=bool(k)
                         if l==1:
                             print("Payment Succesfull")
+                            print()
+                            print()
                             print("Redirecting to home page")
+                            print()
+                            print()
                             home()
                             break
-
                 elif z==3:
-                    print("According to the new guidelines of RBI , We do not store your card information")
-                    t=float(input("Enter your Card No.  "))
-                    g=int(input("Enter CVV  "))
-                    l=bool(t)
-                    k=bool(g)
+                    print("According to New RBI Guidelines,We do not store your Card Details")
+                    z=float(input("Enter Your Card no. "))
+                    s=int(input("Enter CVV "))
+                    l=bool(z)
+                    k=bool(s)
                     if l==1 and k==1 :
                         print("Payment Succesfull")
-                        print("Redirecting to home ")
+                        print()
+                        print()
+                        print("Redirecting to home page")
+                        print()
+                        print()
                         home()
-
-
+                
             else:
                 z=True
                 print("Try again")          
@@ -211,55 +233,76 @@ def register():
            display()
 def display():
     try:
-       f.seek(0)
        while True:
            d=p.load(f)
-           print("Name :",d["Name"],end="  ,  ")
+           print("Name:",d["Name"],end="  ,  ")
            print("Genre:",d["Genre"],end="  ,  ")
            print("Cost:",d["Cost"],end="  ,  ")
-           print("Author Name:",d["Author Name"])
+           print("Author Name",d["Author Name"])
            print()
            print()
+
     except:
-        e=input("Would you like to order any book(Yes/No)  ")
+        e=input("Would you like to order any book(Yes/No)")
         if e=="Yes":
             order()
         else:
-            print("Redirecting to home page")
             home()
 def cart():
+    f2=open("cart.dat","rb+")
+    sad=0
     print("Your Cart")
     try:
         f2.seek(0)
         while True:
             d=p.load(f2)
+            sad+=1
             print(d)
 
     except:
-        g=input("Would you like to continue to payment(Yes/No)  ")
-        if g=="Yes":
-            payment()
+        f2.close()
+        if sad>=1:
+            g=input("Would you like to continue to payment(Yes/No)")
+            if g=="Yes":
+                payment()
+                f2.close()
+            else:
+                print("Redirecting to home page")
+                f2.close()
+                home()
+                
+
         else:
+            f2.close()
+            print("Cart is empty")
             print("Redirecting to home page")
             home()
 def feedback():
-    e=input("Enter your feedback  ")
+    e=input("Enter your feedback")
     f3.writelines(e)
     print("Thank You for your Valueable Feedback")
-    n=input("Would you like to continue shopping (Y/N)  ")
+    n=input("Would you like to continue shopping (Y/N)")
     if n=="Y":
         home()
     else:
-        print("Thanks For Shopping")
+        print("Thank You For Shopping With Us ")
         exit()
 def contact():
-    print("Instagram:                 ")
-    print("Facebook:           " )
-    print("Email(For Promotions):          ")
+    print("Instagram: !noob.coder()_2023 ")
+    print("Facebook:   !noob(coder)     " )
+    print("Email(For Promotions): !noob.coder@gmail.com ")
+    n=input("Would you like to continue shopping (Y/N)")
+    if n=="Y":
+        home()
+    else:
+        print("Thank You For Shopping With Us ")
+        exit()
 def home():
 
     while True:
-        x=int(input(("Enter \n 1.TO DISPLAY BOOKS AND THEIR DETAILS \n 2.Cart \n 3.Payment \n 4.Contact Us 5.Feedback\n 6.register\n7.exit\n8.Search a Book")))
+        print("Welcome to Library")
+        print()
+        x=int(input((" 1.TO DISPLAY BOOKS AND THEIR DETAILS \n 2.Cart \n 3.Payment \n 4.Contact Us 5.Feedback\n 6.register\n 7.exit\n 8.Search a Book\n Enter your Option:  ")))
         if x==1:
             display()
         elif x==2:
@@ -284,6 +327,7 @@ def home():
             else:
                 break
 def edit(file):
+
     i=int(input(" Press 1 to Edit Book Name \n Press 2 to Edit Cost \n Press 3 to Edit Genre \n Press 4 to Edit Author Name"))
     if i==1:
         v=input("ENter Author Name")
@@ -315,10 +359,10 @@ def edit(file):
             print("Cost Edited")
 
     elif i==3:
+        f.seek(0)
         v=input("Enter Book Name")
         z=input("Enter the correct genre of the book ")
         try:
-            f.seek(0)
             while True:
                 c=f.tell()
                 d=p.load(f)
@@ -331,10 +375,10 @@ def edit(file):
 
 
     elif i==4:
+        f.seek(0)
         v=input("Enter Book Name")
         z=input("Enter the correct author of the book ")
         try:
-            f.seek(0)
             while True:
                 c=f.tell()
                 d=p.load(f)
@@ -349,12 +393,9 @@ f1.close()
 f2.close()
 f3.close()
 
-
-    
-    
-
             
        
+
 
 
 
